@@ -1,0 +1,61 @@
+Create a file named:
+
+README.md
+
+Paste this:
+
+Dynamic Pathfinding Agent
+
+This project implements a grid-based Dynamic Pathfinding Agent using:
+
+A* Search
+
+Greedy Best First Search
+
+Manhattan and Euclidean heuristics
+
+Dynamic obstacle spawning
+
+Real-time re-planning
+
+Interactive obstacle editing
+
+Requirements
+
+Python 3.x
+
+Install dependency:
+
+pip install pygame
+How to Run
+python menu_final_pathfinding.py
+Controls
+
+Left Click → Add / Remove obstacle
+
+ENTER → Start search
+
+Close window → Return to menu
+
+Features
+
+Adjustable obstacle density
+
+Dynamic mode (random obstacle spawning)
+
+Frontier, visited, and path visualization
+
+Performance metrics
+
+Algorithms Implemented
+A*
+
+f(n) = g(n) + h(n)
+
+Greedy Best First
+
+f(n) = h(n)
+
+Author
+
+Huzaifa
