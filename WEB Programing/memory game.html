@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Memory Game</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        body {
+            background: black;
+            color: white;
+            font-family: Arial;
+            text-align: center;
+        }
+
+        #gameBoard {
+            width: 420px;
+            margin: auto;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            width: 80px;
+            height: 80px;
+            margin: 5px;
+            background: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 34px;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        .card.flipped {
+            background: white;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Memory Matching Game</h2>
+    <p>Moves: <span id="moves">0</span></p>
+    <p>Time: <span id="timer">0</span> sec</p>
+    <div id="gameBoard"></div>
+    <div id="winMessage" style="display:none;">
+        <h2>You Win!</h2>
+    </div>
+    <audio id="matchSound" src="match.mp3"></audio>
+    <audio id="wrongSound" src="wrong.mp3"></audio>
+    <script>
+        var symbols = [
+            "@", "@",
+            "#", "#",
+            "$", "$",
+            "%", "%",
+            "&", "&",
+            "*", "*",
+            "!", "!",
+            "?", "?"
+        ];
+        symbols.sort(function () {
+            return 0.5 - Math.random();
+        });
+        var first = null;
+        var second = null;
+        var moves = 0;
+        var matched = 0;
+        var time = 0;
+        setInterval(function () {
+            time++;
+            $("#timer").text(time);
+        }, 1000);
+        for (var i = 0; i < symbols.length; i++) {
+            var card = $("<div class='card'>?</div>");
+            card.attr("data-symbol", symbols[i]);
+            $("#gameBoard").append(card);
+        }
+        $(".card").click(function () {
+            if ($(this).hasClass("flipped")) {
+                return;
+            }
+            $(this).addClass("flipped");
+            $(this).text($(this).attr("data-symbol"));
+            if (first == null) {
+                first = $(this);
+            }
+            else {
+                second = $(this);
+                moves++;
+                $("#moves").text(moves);
+                if (first.attr("data-symbol") == second.attr("data-symbol")) {
+                    $("#matchSound")[0].play();
+                    matched++;
+                    first = null;
+                    second = null;
+                    if (matched == 8) {
+                        $("#winMessage").show();
+                    }
+                }
+                else {
+                    $("#wrongSound")[0].play();
+                    setTimeout(function () {
+                        first.removeClass("flipped").text("?");
+                        second.removeClass("flipped").text("?");
+                        first = null;
+                        second = null;
+                    }, 1000);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

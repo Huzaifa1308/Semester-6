@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>guessing game</title>
+<style>
+    body{
+        background-color: beige;
+        background-image: url("https://img.freepik.com/premium-photo/black-numbers-black-background_333900-12265.jpg");
+        background-size: cover;
+        font-style: italic;
+    }
+
+    #name{
+         color: aliceblue;
+        margin-left: 580px;
+        margin-top: 100px;
+        border: 4px solid white;
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 10px;
+    }
+
+    #main{
+        text-align: center;
+        align-content: center;
+        height: 200px;
+        width: 300px;
+        padding: 10px;
+        margin-left: 600px;
+        margin-top: 100px;
+        border: solid white;
+        border-width: 4px;
+        border-radius: 10px;
+        color: aliceblue;
+        box-shadow: 6px 6px 15px rgba(0,0,0,0.9);
+    }
+
+    #guess{
+        border-radius: 4px;
+    }
+</style>
+</head>
+
+<body>
+    <div id="name">
+        <h1><b>Number Guessing Game</b></h1>
+    </div>
+    <div id="main">
+        <h2 id="range"><b>Range: 1 - </b></h2>
+        <input type="number" id="guess" placeholder="Enter a Number">
+        <p id="Attempts"><b>Attempts left: 3</b></p>
+        <button onclick="check()">Submit</button>
+        <p id="result"></p>
+    </div>
+<script>
+let rangeMax = 10
+let attempts = 3
+let randomNumber = Math.floor(Math.random()*rangeMax)+1
+document.getElementById("range").innerText = "Range: 1 - " + rangeMax
+function check(){
+    let guess = Number(document.getElementById("guess").value)
+    let result = document.getElementById("result")
+    let atm = document.getElementById("Attempts")
+    if(guess === randomNumber){
+        result.innerText = "Correct! Moving to next level."
+        rangeMax = rangeMax * 2
+        attempts = 3
+        randomNumber = Math.floor(Math.random()*rangeMax)+1
+        document.getElementById("range").innerText = "Range: 1 - " + rangeMax
+        atm.innerText = "Attempts left: " + attempts
+        document.getElementById("guess").value = ""
+    }
+
+    else{
+        attempts--
+        if(guess >= randomNumber - 2 && guess < randomNumber)
+            result.innerText = "Close (Low)"
+        else if(guess <= randomNumber + 2 && guess > randomNumber)
+            result.innerText = "Close (High)"
+        else if(guess < randomNumber)
+            result.innerText = "Too Low"
+        else if(guess > randomNumber)
+            result.innerText = "Too High"
+        atm.innerText = "Attempts left: " + attempts
+        if(attempts === 0){
+            result.innerText =
+            "Game Over! Correct number was " + randomNumber
+            document.querySelector("button").disabled = true
+    }
+}
+}
+</script>
+</body>
+</html>
