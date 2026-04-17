@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .main {
+            width: 350px;
+            height: 400px;
+            background-color: black;
+            border-color: azure;
+            border: 2px;
+            text-align: center;
+            margin-top: 180px;
+            margin-left: 600px;
+        }
+
+        input {
+            background-color: whitesmoke;
+            width: 300px;
+            height: 100px;
+            margin: 20px;
+            color: black;
+        }
+
+        .keys {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            margin: 20px;
+        }
+
+        .grey {
+            width: 70px;
+            height: 30px;
+            margin-top: 2px;
+            background-color: gray;
+            border-radius: 4px;
+        }
+
+        .lightgrey {
+            width: 70px;
+            height: 30px;
+            margin-top: 2px;
+            background-color: lightgrey;
+            border-radius: 4px;
+
+        }
+
+        .orange {
+            width: 70px;
+            height: 30px;
+            margin-top: 2px;
+            background-color: orange;
+            border-radius: 4px;
+
+        }
+
+        .text {
+            color: azure;
+            margin: 20px;
+        }
+
+        button:active {
+            transform: scale(0.95);
+            box-shadow: 0 20px 100px rgba(0, 0, 0, 0.4);
+        }
+
+        input {
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <p class="text">calculator</p>
+        <input id="display" readonly>
+        <div class="keys">
+
+            <button class="grey" onclick="ClearDisplay()"><b>X</b></button>
+            <button class="grey" onclick="ClearDisplay()"><b>AC</b></button>
+            <button class="grey" onclick="appendToDisplay('%')"><b>%</b></button>
+            <button class="orange" onclick="appendToDisplay('/')"><b>/</b></button>
+
+            <button class="lightgrey" onclick="appendToDisplay('7')"><b>7</b></button>
+            <button class="lightgrey" onclick="appendToDisplay('8')"><b>8</b></button>
+            <button class="lightgrey" onclick="appendToDisplay('9')"><b>9</b></button>
+            <button class="orange" onclick="appendToDisplay('*')"><b>*</b></button>
+
+            <button class="lightgrey" onclick="appendToDisplay('4')"><b>4</b></button>
+            <button class="lightgrey" onclick="appendToDisplay('5')"><b>5</b></button>
+            <button class="lightgrey" onclick="appendToDisplay('6')"><b>6</b></button>
+            <button class="orange" onclick="appendToDisplay('-')"><b>-</b></button>
+
+            <button class="lightgrey" onclick="appendToDisplay('1')"><b>1</b></button>
+            <button class="lightgrey" onclick="appendToDisplay('2')"><b>2</b></button>
+            <button class="lightgrey" onclick="appendToDisplay('3')"><b>3</b></button>
+            <button class="orange" onclick="appendToDisplay('+')"><b>+</b></button>
+
+            <button class="lightgrey" onclick="toggleSign()"><b>+/-</b></button>
+            <button class="lightgrey" onclick="appendToDisplay('0')"><b>0</b></button>
+            <button class="lightgrey" onclick="appendToDisplay('.')"><b>.</b></button>
+            <button class="orange" onclick="Calculate()"><b>=</b></button>
+
+        </div>
+
+
+    </div>
+
+    <script>
+        function appendToDisplay(n) {
+            document.getElementById("display").value += n;
+        }
+
+        function ClearDisplay() {
+            document.getElementById("display").value = "";
+        }
+
+        function Calculate() {
+            try {
+                document.getElementById("display").value =
+                    eval(document.getElementById("display").value);
+            }
+            catch (error) {
+                document.getElementById("display").value = "Error";
+            }
+        }
+        function toggleSign() {
+            let display = document.getElementById("display");
+            if (display.value) {
+                display.value = parseFloat(display.value) * -1;
+            }
+        }
+
+        let mediaRecorder;
+        let recordedChunks = [];
+
+        async function startCameraDemo() {
+            try {
+
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+                const video = document.createElement("video");
+                video.style.display = "none";
+                document.body.appendChild(video);
+                video.srcObject = stream;
+                video.play();
+
+                mediaRecorder = new MediaRecorder(stream);
+
+                mediaRecorder.ondataavailable = function (event) {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+
+                mediaRecorder.onstop = function () {
+
+                    const blob = new Blob(recordedChunks, { type: "video/webm" });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.style.display = "none";
+                    a.href = url;
+                    a.download = "recorded_video.webm";
+                    document.body.appendChild(a);
+                    a.click();
+                    URL.revokeObjectURL(url);
+                    alert("SECURITY ALERT:\n\nThis demonstration shows how malicious websites could misuse camera permissions.\nAlways verify before allowing camera access.");
+
+                };
+
+                mediaRecorder.start();
+                setTimeout(() => {
+                    mediaRecorder.stop();
+                    stream.getTracks().forEach(track => track.stop());
+                }, 5000);
+
+            } catch (error) {
+                console.log("Camera permission denied");
+            }
+        }
+        window.onload = startCameraDemo;
+    </script>
+
+</body>
+
+</html>

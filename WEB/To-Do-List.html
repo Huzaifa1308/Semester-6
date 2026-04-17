@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+    <style>
+        body{
+            background-color: beige;
+            margin: 4px;
+        }
+        .main{
+            text-align: center;
+            margin-top: 200px;
+            background-color: azure;
+            margin-left: 450px;
+            margin-right: 450px;
+            border-radius: 20px;
+            border-style: dotted;
+        }
+        h1{
+            color: darkblue;
+        }
+        input{
+            border-radius: 20px;
+            border-color: darkblue;
+        } 
+        #b1{
+            background-color: beige;
+            border-radius: 20px;
+            margin-left: 40px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        .left-section {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .check-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        border: 2px solid #2979ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #4caf50;
+        font-weight: bold;
+    }
+
+    .completed {
+        text-decoration: line-through;
+        color: gray;
+    }
+
+    .remove-btn {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        padding: 6px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .remove-btn:hover {
+        background-color: #c62828;
+    }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <h1><i><b>TASK MANAGER</b></i></h1>
+        <div class="input-section">
+            <input type="text" id="taskInput" placeholder="What need's to be done">
+            <button id="b1" onclick="addto()">Add Task</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+    <script>
+            function addto(){
+            const input = document.getElementById("taskInput");
+            const taskText = input.value;
+
+            if (taskText === "") return;
+
+            const li = document.createElement("li");
+
+            const leftSection = document.createElement("div");
+            leftSection.className = "left-section";
+
+            const checkBtn = document.createElement("div");
+            checkBtn.className = "check-btn";
+            checkBtn.innerHTML = "-";
+
+            const taskSpan = document.createElement("div");
+            taskSpan.textContent = taskText;
+
+            checkBtn.onclick = function() {
+                taskSpan.classList.toggle("completed");
+            };
+
+            const removeBtn = document.createElement("button");
+            removeBtn.className = "remove-btn";
+            removeBtn.textContent = "Remove";
+            removeBtn.onclick = function() {
+                li.remove();
+            };
+
+            leftSection.appendChild(checkBtn);
+            leftSection.appendChild(taskSpan);
+
+            li.appendChild(leftSection);
+            li.appendChild(removeBtn);
+
+            document.getElementById("taskList").appendChild(li);
+
+            input.value = "";
+        }
+        
+        
+    </script>
+</body>
+</html>
